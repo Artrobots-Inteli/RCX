@@ -164,7 +164,7 @@
 		(uuid "113a7fe0-8aff-41a5-866d-d016f932ae29")
 		(at 190.110624 134.62 90)
 		(property "Reference" "U1"
-			(at -5.5332 11.6132 270)
+			(at -5.5332 11.6132 -90)
 			(layer "B.SilkS")
 			(uuid "faa78eed-1986-4370-ae65-2b218681135a")
 			(effects
@@ -176,7 +176,7 @@
 			)
 		)
 		(property "Value" "ROB-14450"
-			(at 1.4518 -11.6132 270)
+			(at 1.4518 -11.6132 -90)
 			(layer "B.Fab")
 			(uuid "c9f1e4c5-675f-4f6f-9bca-ac28b62dad68")
 			(effects
@@ -1163,7 +1163,7 @@
 		(descr "Arduino Nano, http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf")
 		(tags "Arduino Nano")
 		(property "Reference" "A2"
-			(at 7.62 5.08 270)
+			(at 7.62 5.08 -90)
 			(layer "B.SilkS")
 			(uuid "d06df0a8-ffa9-4876-8330-355c1b24a29c")
 			(effects
@@ -1914,7 +1914,7 @@
 		(descr "Through hole straight socket strip, 1x02, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "J9"
-			(at 0 2.77 270)
+			(at 0 2.77 -90)
 			(layer "B.SilkS")
 			(uuid "156525ae-6b38-4cf3-85de-a2638f4a5f27")
 			(effects
@@ -1926,7 +1926,7 @@
 			)
 		)
 		(property "Value" "VCC pinos"
-			(at 0 -5.31 270)
+			(at 0 -5.31 -90)
 			(layer "B.Fab")
 			(uuid "61040457-ceef-4cbb-b961-e33dc63a80e4")
 			(effects
@@ -2454,7 +2454,7 @@
 		(descr "Through hole straight socket strip, 1x11, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x11 2.54mm single row")
 		(property "Reference" "J1"
-			(at 0 2.77 270)
+			(at 0 2.77 -90)
 			(layer "B.SilkS")
 			(uuid "dc1bd2eb-03b7-4661-ae8f-e55daa7e1ec6")
 			(effects
@@ -2466,7 +2466,7 @@
 			)
 		)
 		(property "Value" "Conn_01x11_Pin"
-			(at 0 -28.17 270)
+			(at 0 -28.17 -90)
 			(layer "B.Fab")
 			(uuid "4c047729-2297-461e-87a2-6cda0ff0df2a")
 			(effects
@@ -3093,7 +3093,7 @@
 		(descr "TO-220-3, Vertical, RM 2.54mm, see https://www.vishay.com/docs/66542/to-220-1.pdf")
 		(tags "TO-220-3 Vertical RM 2.54mm")
 		(property "Reference" "U2"
-			(at 2.54 4.27 270)
+			(at 2.54 4.27 -90)
 			(layer "B.SilkS")
 			(uuid "a5a7df5f-d17a-4169-985b-d9f228e09b80")
 			(effects
@@ -3105,7 +3105,7 @@
 			)
 		)
 		(property "Value" "LM7805_TO220"
-			(at 2.54 -2.5 270)
+			(at 2.54 -2.5 -90)
 			(layer "B.Fab")
 			(uuid "5b2c674a-1a2d-470d-a924-857028effab5")
 			(effects
@@ -3341,7 +3341,7 @@
 			(uuid "a0cfbe1c-208b-4a8b-b236-bc07d005e4bd")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 2.54 4.27 270)
+			(at 2.54 4.27 -90)
 			(layer "B.Fab")
 			(uuid "18ea3f72-ce0a-4fc1-9c4d-c8943262ae9a")
 			(effects
