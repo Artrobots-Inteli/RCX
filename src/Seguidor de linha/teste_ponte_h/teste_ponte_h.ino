@@ -1,26 +1,3 @@
-/*
- * Maker's Digest
- *
- * DC Motor control using the tb6612fng dual h-bridge motor
- * controller
- * 
- * In this example I have created some functions for you to
- * examine and use. They will drive a bot forward, reverse
- * left turn and right turn. It can look compilcated, but the 
- * absolute minumum you need to run a motor in the loop are 
- * these three commands:
- * 
- * analogWrite(pwmPin, 128); // Value from 0 - 255 for speed.
- * digitalWrite(dirPin1, HIGH);
- * digitalWrite(dirPin2, LOW);
- * 
- * analogWrite(pwmPin, val) tells the motor what speed to run.
- * 
- * the two digitalWrite() commands need to be HIGH AND LOW. This
- * determines the direction. Just flip the values of HIGH and
- * LOW to reverse the direction
- */
-
 // Setup pins
 int standBy = 5;
 
@@ -35,7 +12,6 @@ int BIN1 = 8;  // Direction pin 1
 int BIN2 = 9;  // Direction pin 2
 
 void setup() {
-
   // Setup Pins as OUTPUT
   pinMode(standBy, OUTPUT);
 
@@ -54,23 +30,23 @@ void setup() {
 }
 
 void loop() {
-  forward(128);   // Move forward
-  delay(2000);    // ... for 2 seconds
+  forward(128);   // Move forward with medium speed (128 out of 255)
+  delay(1000);    // ... for 2 seconds
   stop();         // ... Stop the motors
-  delay(250);     // Delay between motor runs.
+  delay(2000);     // Delay between motor runs.
   
-  reverse(255);   // Move in reverse
-  delay(2000);    // ... for 2 seconds
+  reverse(128);   // Move in reverse with medium speed
+  delay(1000);    // ... for 2 seconds
   stop();         // ... Stop the Motors
-  delay(250);     // Delay between motor runs.
+  delay(2000);     // Delay between motor runs.
 
-  turnLeft(64);   // Turn Left
-  delay(2000);    // ... for 2 seconds
+  turnLeft(128);   // Turn Left with medium speed
+  delay(128);    // ... for 2 seconds
   stop();         // ... stop the motors
-  delay(250);     // Delay between motor runs.
+  delay(2000);     // Delay between motor runs.
 
-  turnRight(255); // Turn Right
-  delay(2000);    // ... for 2 seconds
+  turnRight(128); // Turn Right with medium speed
+  delay(1000);    // ... for 2 seconds
   stop();         // ... stop the motors
   delay(2000);    // Delay between motor runs.
 }
@@ -116,16 +92,15 @@ void runMotor(int motor, int spd, int dir)
     dirPin2 = LOW;
   }
 
-  if(motor == 1) {
+  if(motor == 0) { // Motor A
     digitalWrite(AIN1, dirPin1);
     digitalWrite(AIN2, dirPin2);
-    analogWrite(PWMA, spd);
-  } else {
+    analogWrite(PWMA, spd); // Use the speed directly (0-255)
+  } else { // Motor B
     digitalWrite(BIN1, dirPin1);
     digitalWrite(BIN2, dirPin2);
-    analogWrite(PWMB, spd);
+    analogWrite(PWMB, spd); // Use the speed directly (0-255)
   }
-  
 }
 
 void stop() {
