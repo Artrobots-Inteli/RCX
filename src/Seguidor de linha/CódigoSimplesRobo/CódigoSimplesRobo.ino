@@ -1,3 +1,8 @@
+#include <SoftwareSerial.h>
+
+// Pinos para o módulo Bluetooth
+SoftwareSerial BTSerial(3, 2); // RX, TX
+
 // Definições dos pinos dos sensores
 #define S1 A0
 #define S2 A1
@@ -8,11 +13,17 @@
 #define S7 A6
 
 // Definições dos pinos do driver de motor
-#define AIN1 10
-#define AIN2 11
-#define STBY 7
-#define BIN1 5
-#define BIN2 6
+// Motor A
+#define AIN1 4
+#define AIN2 3
+#define PWMA 2
+
+#define STBY 5
+
+// Motor B
+#define BIN1 8
+#define BIN2 9
+#define PWMB 111
 
 // Limite para considerar a detecção da linha
 #define THRESHOLD 100
@@ -21,14 +32,22 @@
 #define MOTOR_SPEED 100
 
 void setup() {
-  // Inicializa a comunicação serial
   Serial.begin(9600);
+
+  BTSerial.begin(9600);
+
+  // Setup Pins as OUTPUT
+  pinMode(standBy, OUTPUT);
 
   // Configuração dos pinos do driver de motor
   pinMode(AIN1, OUTPUT);
   pinMode(AIN2, OUTPUT);
+  pinMode(PWMA, OUTPUT);
+
   pinMode(BIN1, OUTPUT);
   pinMode(BIN2, OUTPUT);
+  pinMode(PWMB, OUTPUT);
+
   pinMode(STBY, OUTPUT);
 
   // Ativa o driver de motor
@@ -36,6 +55,7 @@ void setup() {
 }
 
 void loop() {
+
   // Lê os valores dos sensores
   int sensor1 = analogRead(S1);
   int sensor2 = analogRead(S2);
@@ -45,57 +65,107 @@ void loop() {
   int sensor6 = analogRead(S6);
   int sensor7 = analogRead(S7);
 
-  // Exibe os valores dos sensores na Serial Monitor
-  Serial.print(sensor1); Serial.print(" ");
-  Serial.print(sensor2); Serial.print(" ");
-  Serial.print(sensor3); Serial.print(" ");
-  Serial.print(sensor4); Serial.print(" ");
-  Serial.print(sensor5); Serial.print(" ");
-  Serial.print(sensor6); Serial.print(" ");
-  Serial.println(sensor7);
+  // Serial.print(sensor1); Serial.print(" ");
+  // Serial.print(sensor2); Serial.print(" ");
+  // Serial.print(sensor3); Serial.print(" ");
+  // Serial.print(sensor4); Serial.print(" ");
+  // Serial.print(sensor5); Serial.print(" ");
+  // Serial.print(sensor6); Serial.print(" ");
+  // Serial.println(sensor7);
 
-  // Determina a direção com base nos sensores
-  if (sensor4 > THRESHOLD) {
-    // Linha está no meio
-    moveForward();
-  } else if (sensor3 > THRESHOLD || sensor2 > THRESHOLD) {
-    // Linha está à esquerda
-    turnLeft();
-  } else if (sensor5 > THRESHOLD || sensor6 > THRESHOLD) {
-    // Linha está à direita
-    turnRight();
-  } else {
-    // Linha não detectada, parar
-    stopMotors();
+  if (BTSerial.available()){
+
+    BTSerial.print(sensor1); Serial.print(" ");
+    BTSerial.print(sensor2); Serial.print(" ");
+    BTSerial.print(sensor3); Serial.print(" ");
+    BTSerial.print(sensor4); Serial.print(" ");
+    BTSerial.print(sensor5); Serial.print(" ");
+    BTSerial.print(sensor6); Serial.print(" ");
+    BTSerial.println(sensor7);
+
+    String bluetoothData = BTSerial.readString();
+
+    Serial.prinln(bluetoothData);
+
+    if (bluetoothData.indexOf("Off") >= 0) {
+      digitalWrite(13, HIGH);
+    } else {
+      // Determina a direção com base nos sensores
+      if (sensor4 > THRESHOLD) {
+        // Linha está no meio
+        moveForward();
+      } else if (sensor3 > THRESHOLD || sensor2 > THRESHOLD) {
+        // Linha está à esquerda
+        turnLeft();
+      } else if (sensor5 > THRESHOLD || sensor6 > THRESHOLD) {
+        // Linha está à direita
+        turnRight();
+      } else {
+        // Linha não detectada, parar
+        stopMotors();
+      }
+    }
+
+    delay(100); // Pequeno atraso para estabilidade
+
+  }
+  else{
+    stop();
+  }
+}
+
+/*
+ * Moviment Functions
+ * *****************************************************
+ */
+
+void turnLeft(int spd)
+{
+  runMotor(0, spd, 0);
+  runMotor(1, spd, 1);
+}
+
+void turnRight(int spd)
+{
+  runMotor(0, spd, 1);
+  runMotor(1, spd, 0);
+}
+
+void forward(int spd) 
+{
+  runMotor(0, spd, 0);
+  runMotor(1, spd, 0);
+}
+
+void reverse(int spd)
+{
+  runMotor(0, spd, 1);
+  runMotor(1, spd, 1);
+}
+
+void runMotor(int motor, int spd, int dir)
+{
+  digitalWrite(standBy, HIGH); // Turn on Motor
+
+  boolean dirPin1 = LOW;
+  boolean dirPin2 = HIGH;
+
+  if(dir == 1) {
+    dirPin1 = HIGH;
+    dirPin2 = LOW;
   }
 
-  delay(100); // Pequeno atraso para estabilidade
+  if(motor == 0) { // Motor A
+    digitalWrite(AIN1, dirPin1);
+    digitalWrite(AIN2, dirPin2);
+    analogWrite(PWMA, spd); // Use the speed directly (0-255)
+  } else { // Motor B
+    digitalWrite(BIN1, dirPin1);
+    digitalWrite(BIN2, dirPin2);
+    analogWrite(PWMB, spd); // Use the speed directly (0-255)
+  }
 }
 
-void moveForward() {
-  analogWrite(AIN1, MOTOR_SPEED);
-  digitalWrite(AIN2, LOW);
-  analogWrite(BIN1, MOTOR_SPEED);
-  digitalWrite(BIN2, LOW);
-}
-
-void turnLeft() {
-  digitalWrite(AIN1, LOW);
-  analogWrite(AIN2, MOTOR_SPEED);
-  analogWrite(BIN1, MOTOR_SPEED);
-  digitalWrite(BIN2, LOW);
-}
-
-void turnRight() {
-  analogWrite(AIN1, MOTOR_SPEED);
-  digitalWrite(AIN2, LOW);
-  digitalWrite(BIN1, LOW);
-  analogWrite(BIN2, MOTOR_SPEED);
-}
-
-void stopMotors() {
-  digitalWrite(AIN1, LOW);
-  digitalWrite(AIN2, LOW);
-  digitalWrite(BIN1, LOW);
-  digitalWrite(BIN2, LOW);
+void stop() {
+  digitalWrite(standBy, LOW);
 }

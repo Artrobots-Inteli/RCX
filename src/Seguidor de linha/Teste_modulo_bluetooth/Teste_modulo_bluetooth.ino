@@ -1,16 +1,17 @@
 #include <SoftwareSerial.h>
 
 // Pinos para o módulo Bluetooth
-SoftwareSerial BTSerial(2, 3); // RX, TX
+SoftwareSerial BTSerial(6, 7); // RX, TX
 
 void setup() {
-  // Inicializa a comunicação serial para o monitor serial
   Serial.begin(9600);
   
-  // Inicializa a comunicação serial para o módulo Bluetooth
   BTSerial.begin(9600);
   
   Serial.println("Módulo Bluetooth HC-05 Inicializado");
+
+  // LED in-built 
+  pinMode(13, OUTPUT);
 }
 
 void loop() {
@@ -20,12 +21,17 @@ void loop() {
   // Verifica se há dados recebidos do celular
   if (BTSerial.available()) {
     // Lê o dado recebido
-    char data = BTSerial.read();
+    String data = BTSerial.readString();
     // Envia o dado para o monitor serial
     Serial.print("Recebido: ");
     Serial.println(data);
+
+    if (data.indexOf("LigarLed") >= 0) {
+      digitalWrite(13, HIGH);
+    } else if (data.indexOf("DesligarLed") >= 0) {
+      digitalWrite(13, LOW);
+    }
   }
   
-  // Pequeno atraso para evitar sobrecarregar a comunicação
   delay(1000);
 }
