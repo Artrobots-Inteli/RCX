@@ -38,14 +38,20 @@ QTRSensors qtr;
 const uint8_t SensorCount = 8;
 uint16_t sensorValues[SensorCount];
 
+// #define EMITTER_PIN QTR_NO_EMITTER_PIN
+
 void setup()
 {
+  pinMode(10, OUTPUT);
+
+  digitalWrite(10, HIGH);
+
   // configure the sensors
   qtr.setTypeAnalog();
   qtr.setSensorPins((const uint8_t[]){A0, A1, A2, A3, A4, A5, A6, A7}, SensorCount);
-  qtr.setEmitterPin(10);
+  // qtr.setEmitterPin(EMITTER_PIN);
 
-  delay(2000);
+  delay(3000);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH); // turn on Arduino's LED to indicate we are in calibration mode
 
@@ -57,6 +63,7 @@ void setup()
   {
     qtr.calibrate();
   }
+  
   digitalWrite(LED_BUILTIN, LOW); // turn off Arduino's LED to indicate we are through with calibration
 
   // print the calibration minimum values measured when emitters were on

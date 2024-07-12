@@ -52,34 +52,34 @@ void setup()
   digitalWrite(10, HIGH)
 
 
- delay(500);
- pinMode(13, OUTPUT);
- digitalWrite(13, HIGH); // turn on Arduino's LED to indicate we are in calibration mode
+  delay(500);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, HIGH); // turn on Arduino's LED to indicate we are in calibration mode
 
- for (int i = 0; i < 3000; i++) // make the calibration take about 10 seconds
- {
- qtra.calibrate(); // reads all sensors 10 times at 2.5 ms per six sensors (i.e. ~25 ms per call)
- }
- digitalWrite(13, LOW); // turn off Arduino's LED to indicate we are through with calibration
+  for (int i = 0; i < 3000; i++) // make the calibration take about 10 seconds
+  {
+  qtra.calibrate(); // reads all sensors 10 times at 2.5 ms per six sensors (i.e. ~25 ms per call)
+  }
+  digitalWrite(13, LOW); // turn off Arduino's LED to indicate we are through with calibration
 
- // print the calibration minimum values measured when emitters were on
- Serial.begin(9600);
- for (int i = 0; i < NUM_SENSORS; i++)
- {
- BTSerial.print(qtra.calibratedMinimumOn[i]);
- BTSerial.print(' ');
- }
- BTSerial.println();
- 
- // print the calibration maximum values measured when emitters were on
- for (int i = 0; i < NUM_SENSORS; i++)
- {
- BTSerial.print(qtra.calibratedMaximumOn[i]);
- BTSerial.print(' ');
- }
- BTSerial.println();
- BTSerial.println();
- delay(1000);
+  // print the calibration minimum values measured when emitters were on
+  Serial.begin(9600);
+  for (int i = 0; i < NUM_SENSORS; i++)
+  {
+  BTSerial.print(qtra.calibratedMinimumOn[i]);
+  BTSerial.print(' ');
+  }
+  BTSerial.println();
+  
+  // print the calibration maximum values measured when emitters were on
+  for (int i = 0; i < NUM_SENSORS; i++)
+  {
+  BTSerial.print(qtra.calibratedMaximumOn[i]);
+  BTSerial.print(' ');
+  }
+  BTSerial.println();
+  BTSerial.println();
+  delay(1000);
 }
 
 
