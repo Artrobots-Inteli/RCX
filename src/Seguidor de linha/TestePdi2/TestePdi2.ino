@@ -28,15 +28,15 @@ int sensores[8];
 int digital[8];
 int leituraFundo[8];
 int leituraLinha[8];
-int linha = 1; // 1 = linha branca; 0 = linha preta
+int linha = 0; // 1 = linha branca; 0 = linha preta
 int limiar[8]; // utilizado para calibração
 long int somap, soma, pos, posicao, lastPos; // cálculo da posição do robô
 
 bool isRunning = false; // Variável para armazenar o estado do robô
 int baseSpeed = 150; // Velocidade base para os motores
 
-float Kp = 1.2;
-float Kd = 7.5;
+float Kp = 0.7;
+float Kd = 3.5;
 float Ki = 0.0;
 int last_error = 0;
 int integral = 0;
