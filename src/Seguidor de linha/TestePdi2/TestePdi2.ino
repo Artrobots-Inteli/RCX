@@ -35,8 +35,8 @@ long int somap, soma, pos, posicao, lastPos; // cálculo da posição do robô
 bool isRunning = false; // Variável para armazenar o estado do robô
 int baseSpeed = 150; // Velocidade base para os motores
 
-float Kp = 1.2;
-float Kd = 7.5;
+float Kp = 1.8;
+float Kd = 8.2;
 float Ki = 0.0;
 int last_error = 0;
 int integral = 0;
@@ -107,8 +107,11 @@ void loop() {
     int motorEsq = baseSpeed + correction;
     int motorDir = baseSpeed - correction;
 
-    runMotor(0, constrain(motorEsq, 0, 255), motorEsq > 0 ? 0 : 1);
-    runMotor(1, constrain(motorDir, 0, 255), motorDir > 0 ? 0 : 1);
+    motorEsq = constrain(motorEsq, 128, 255);
+    motorDir = constrain(motorDir, 128, 255);
+
+    runMotor(0, motorEsq, motorEsq > 0 ? 0 : 1);
+    runMotor(1, motorDir, motorDir > 0 ? 0 : 1);
 
     BTSerial.print("Posição: ");
     BTSerial.print(posicao);
@@ -118,7 +121,7 @@ void loop() {
     stop();
   }
 
-  // delay(50); // Pequeno atraso para estabilidade
+  delay(50); // Pequeno atraso para estabilidade
 }
 
 // Funções de calibração
@@ -221,8 +224,8 @@ void reverse(int spd) {
 void runMotor(int motor, int spd, int dir) {
   digitalWrite(STBY, HIGH); // Ligar motor
 
-  boolean dirPin1 = LOW;
-  boolean dirPin2 = HIGH;
+  bool dirPin1 = LOW;
+  bool dirPin2 = HIGH;
 
   if (dir == 1) {
     dirPin1 = HIGH;

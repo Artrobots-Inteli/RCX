@@ -31,9 +31,9 @@ const int basespeedb = 165;
 const int minspeeda = 150;
 const int minspeedb = 150;
 
-float Kp = 0.6; // Ganho proporcional
+float Kp = 0.3; // Ganho proporcional
 float Ki = 0.0; // Ganho integral
-float Kd = 0.3; // Ganho derivativo
+float Kd = 0.6; // Ganho derivativo
 uint8_t multiP = 1;
 uint8_t multiI = 1;
 uint8_t multiD = 1;
