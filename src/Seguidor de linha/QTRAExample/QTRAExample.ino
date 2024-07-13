@@ -35,8 +35,8 @@ SoftwareSerial BTSerial(6, 7); // RX, TX
 
 QTRSensors qtr;
 
-const uint8_t SensorCount = 8;
-uint16_t sensorValues[SensorCount];
+const int SensorCount = 8;
+int sensorValues[SensorCount];
 
 // #define EMITTER_PIN QTR_NO_EMITTER_PIN
 
@@ -59,18 +59,18 @@ void setup()
   // 0.1 ms per sensor * 4 samples per sensor read (default) * 6 sensors
   // * 10 reads per calibrate() call = ~24 ms per calibrate() call.
   // Call calibrate() 400 times to make calibration take about 10 seconds.
-  for (uint16_t i = 0; i < 400; i++)
+  for (int i = 0; i < 400; i++)
   {
     qtr.calibrate();
   }
-  
+
   digitalWrite(LED_BUILTIN, LOW); // turn off Arduino's LED to indicate we are through with calibration
 
   // print the calibration minimum values measured when emitters were on
   Serial.begin(9600);
   BTSerial.begin(9600);
 
-  for (uint8_t i = 0; i < SensorCount; i++)
+  for (int i = 0; i < SensorCount; i++)
   {
     BTSerial.print(qtr.calibrationOn.minimum[i]);
     BTSerial.print(' ');
@@ -78,7 +78,7 @@ void setup()
   BTSerial.println();
 
   // print the calibration maximum values measured when emitters were on
-  for (uint8_t i = 0; i < SensorCount; i++)
+  for (int i = 0; i < SensorCount; i++)
   {
     BTSerial.print(qtr.calibrationOn.maximum[i]);
     BTSerial.print(' ');
@@ -92,12 +92,12 @@ void loop()
 {
   // read calibrated sensor values and obtain a measure of the line position
   // from 0 to 5000 (for a white line, use readLineWhite() instead)
-  uint16_t position = qtr.readLineWhite(sensorValues);
+  int position = qtr.readLineWhite(sensorValues);
 
   // print the sensor values as numbers from 0 to 1000, where 0 means maximum
   // reflectance and 1000 means minimum reflectance, followed by the line
   // position
-  for (uint8_t i = 0; i < SensorCount; i++)
+  for (int i = 0; i < SensorCount; i++)
   {
     BTSerial.print(sensorValues[i]);
     BTSerial.print('\t');
