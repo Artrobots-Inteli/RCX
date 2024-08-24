@@ -3267,12 +3267,6 @@
 		(color 0 0 0 0)
 		(uuid "deb4b4de-65f5-43f1-ab23-785fd1af94f6")
 	)
-	(junction
-		(at 87.63 86.36)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ea10c059-ed30-4df7-abc3-5b190e4172e5")
-	)
 	(wire
 		(pts
 			(xy 52.07 78.74) (xy 52.07 77.47)
@@ -3615,16 +3609,6 @@
 	)
 	(wire
 		(pts
-			(xy 72.39 62.23) (xy 72.39 59.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "40fc4c12-1b58-464b-985c-207637a927a1")
-	)
-	(wire
-		(pts
 			(xy 163.83 111.76) (xy 185.42 111.76)
 		)
 		(stroke
@@ -3685,16 +3669,6 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 86.36) (xy 87.63 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4f9f0dbb-b600-4849-9c6e-a25a22948b8e")
-	)
-	(wire
-		(pts
 			(xy 35.56 88.9) (xy 35.56 91.44)
 		)
 		(stroke
@@ -3712,16 +3686,6 @@
 			(type default)
 		)
 		(uuid "5255ecfb-2b56-41cf-8d20-f10c1a44a50e")
-	)
-	(wire
-		(pts
-			(xy 60.96 60.96) (xy 60.96 59.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "52dd3f20-3999-4ed8-b867-d9769dfa511c")
 	)
 	(wire
 		(pts
@@ -3885,26 +3849,6 @@
 	)
 	(wire
 		(pts
-			(xy 62.23 60.96) (xy 62.23 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6ea1972f-12ed-450d-b6f4-fdfe12c03be5")
-	)
-	(wire
-		(pts
-			(xy 77.47 88.9) (xy 77.47 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "70f32abe-7f67-42db-9234-0d87ff25ab83")
-	)
-	(wire
-		(pts
 			(xy 39.37 96.52) (xy 39.37 99.06)
 		)
 		(stroke
@@ -3915,16 +3859,6 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 85.09) (xy 87.63 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "822b2df0-66ac-433c-8d11-902ae49abf3f")
-	)
-	(wire
-		(pts
 			(xy 59.69 140.97) (xy 59.69 144.78)
 		)
 		(stroke
@@ -3932,16 +3866,6 @@
 			(type default)
 		)
 		(uuid "86550b24-bf66-4d74-b136-359eb7cbf180")
-	)
-	(wire
-		(pts
-			(xy 62.23 62.23) (xy 72.39 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "88eb9c8f-7357-473a-baec-93ec75682f79")
 	)
 	(wire
 		(pts
@@ -4175,16 +4099,6 @@
 	)
 	(wire
 		(pts
-			(xy 62.23 60.96) (xy 60.96 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bfbbf5e0-787a-499b-aaa8-b08a53156c03")
-	)
-	(wire
-		(pts
 			(xy 40.64 99.06) (xy 40.64 101.6)
 		)
 		(stroke
@@ -4222,16 +4136,6 @@
 			(type default)
 		)
 		(uuid "cd519e0d-5ba4-47fe-8442-74fd760893fe")
-	)
-	(wire
-		(pts
-			(xy 77.47 59.69) (xy 77.47 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cd80dd93-44e5-4057-9b5b-6d217713cd9e")
 	)
 	(wire
 		(pts
@@ -4463,16 +4367,6 @@
 		)
 		(uuid "feeeecbc-80c1-44b4-9068-437132e0333f")
 	)
-	(wire
-		(pts
-			(xy 87.63 85.09) (xy 87.63 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ff2929ee-db61-46cb-8ab0-eb95ed527c5a")
-	)
 	(label "Alimentação ponte H"
 		(at 165.1 93.98 90)
 		(fields_autoplaced yes)
@@ -4538,17 +4432,6 @@
 			(justify left bottom)
 		)
 		(uuid "f88238f4-3caf-4f1c-9f05-14fcbf2740a8")
-	)
-	(label "Alimentação sensor lateral"
-		(at 60.96 59.69 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "ff03dfd0-4149-4b90-9929-8e7baaff5006")
 	)
 	(global_label "Bateria Arduino"
 		(shape input)
@@ -5123,73 +5006,6 @@
 			(project "LineFollowerRCX"
 				(path "/84fbcbd8-9b55-4c71-8663-267634a18e15"
 					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:Conn_01x01_Socket")
-		(at 87.63 81.28 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6bb54174-542e-486f-83d7-70495d2f62ec")
-		(property "Reference" "J7"
-			(at 88.9 80.6449 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "Conector sensor lateral Esquerda"
-			(at 88.9 83.1849 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x01_P2.54mm_Vertical"
-			(at 87.63 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 87.63 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x01, script generated"
-			(at 87.63 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7d72f6f5-b5af-4525-bea8-7cad2cba7f6d")
-		)
-		(instances
-			(project "LineFollowerRCX"
-				(path "/84fbcbd8-9b55-4c71-8663-267634a18e15"
-					(reference "J7")
 					(unit 1)
 				)
 			)
@@ -6081,80 +5897,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Conn_01x04_Socket")
-		(at 74.93 54.61 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b4f05edf-38d8-4356-bc89-1e9cc0d0696e")
-		(property "Reference" "J5"
-			(at 76.2 49.53 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Sensor Lateral - Esquerda"
-			(at 76.2 52.07 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Horizontal"
-			(at 74.93 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 74.93 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x04, script generated"
-			(at 74.93 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "17bdea25-a16f-484f-a8c3-e05e85d1e68c")
-		)
-		(pin "2"
-			(uuid "196922a7-edaf-461f-9a15-d2743f490e8c")
-		)
-		(pin "3"
-			(uuid "a4499db9-6dc5-4f38-a65c-866bb69dcaca")
-		)
-		(pin "4"
-			(uuid "de9c40df-ee5c-45f6-9c34-34f2b4459545")
-		)
-		(instances
-			(project "LineFollowerRCX"
-				(path "/84fbcbd8-9b55-4c71-8663-267634a18e15"
-					(reference "J5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 60.96 78.74 180)
 		(unit 1)
@@ -6282,72 +6024,6 @@
 			(project "LineFollowerRCX"
 				(path "/84fbcbd8-9b55-4c71-8663-267634a18e15"
 					(reference "#PWR04")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 74.93 59.69 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "cad3482d-18e3-40a7-aea1-7e8981af9f47")
-		(property "Reference" "#PWR07"
-			(at 74.93 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 74.93 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 74.93 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 74.93 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 74.93 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c8db503a-8d9c-4d4e-a89d-b2f014a35c76")
-		)
-		(instances
-			(project "LineFollowerRCX"
-				(path "/84fbcbd8-9b55-4c71-8663-267634a18e15"
-					(reference "#PWR07")
 					(unit 1)
 				)
 			)
