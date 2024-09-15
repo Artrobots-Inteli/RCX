@@ -20,8 +20,8 @@ int sensorValues[SensorCount];
 
 bool isRunning = false; // Variável para armazenar o estado do robô
 int base = 0;
-float Kprop = 1.2;
-float Kderiv = 7.5;
+float Kprop = 0.3;
+float Kderiv = 0.6;
 float Kinte = 0.0;
 int setpoint = 0;
 int last_error = 0;
@@ -66,7 +66,7 @@ void loop() {
     Serial.println(bluetoothData);
 
     if (bluetoothData.indexOf("On") >= 0) {
-      base = 100; // Definir uma velocidade base
+      base = 175; // Definir uma velocidade base
       isRunning = true;
       digitalWrite(13, HIGH);
     } else if (bluetoothData.indexOf("Off") >= 0) {
