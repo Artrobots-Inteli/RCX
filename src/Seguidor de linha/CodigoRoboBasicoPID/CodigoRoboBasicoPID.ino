@@ -1,86 +1,116 @@
 #include <QTRSensors.h>
+#include <SoftwareSerial.h>  // Biblioteca para comunicação serial via Bluetooth
+
+// Pinos para o módulo Bluetooth
+SoftwareSerial BTSerial(6, 7); // RX, TX
 
 // Propriedades do sensor de linha
-#define NUM_SENSORS             8  // número de sensores usados
-#define NUM_SAMPLES_PER_SENSOR  4  // média de 4 amostras por leitura de sensor
-#define EMITTER_PIN             QTR_NO_EMITTER_PIN  // pino do emissor (não usado neste caso)
+#define NUM_SENSORS             8
+#define NUM_SAMPLES_PER_SENSOR  4
+#define EMITTER_PIN             QTR_NO_EMITTER_PIN
 
+// Ordem dos sensores (ajuste conforme necessário)
 QTRSensorsAnalog qtra((unsigned char[]) {A0, A1, A2, A3, A4, A5, A6, A7}, NUM_SENSORS, NUM_SAMPLES_PER_SENSOR, EMITTER_PIN);
+
 unsigned int sensorValues[NUM_SENSORS];
 
 // Propriedades do driver de motor
 #define AIN1 4
 #define AIN2 3
 #define PWMA 2
-
 #define BIN1 8
 #define BIN2 9
 #define PWMB 11
-
 #define STBY 5
 
 // Propriedades do PID
-const double KP = 0.02;
-const double KD = 0.0;
-double lastError = 0;
-const int GOAL = 3500;  // Meta central do sensor de linha
-const unsigned char BASE_SPEED = 80;  // Velocidade base
-const unsigned char MAX_SPEED = 255;  // Velocidade máxima do PWM (0-255)
+const float Kp = 1.0;
+const float Kd = 0.0;
+const float Ki = 0.0;
+int lastError = 0;
+int integral = 0;
+const int GOAL = 3500;
+const int BASE_SPEED = 200;
+const int MAX_SPEED = 255;
+const int MIN_SPEED = 0;
+
+// Tipo de linha: false para linha preta, true para linha branca
+const bool whiteLine = false;
 
 void setup() {
-  pinMode(10, OUTPUT);
-  digitalWrite(10, HIGH);
-  
-  pinMode(STBY, OUTPUT);
-  digitalWrite(STBY, HIGH);  // Ativa o driver de motor
+  Serial.begin(9600);       // Inicializa a comunicação serial via USB
+  BTSerial.begin(9600);     // Inicializa a comunicação serial via Bluetooth
 
-  // Configura os pinos do driver de motor como saídas
+  pinMode(STBY, OUTPUT);
+  digitalWrite(STBY, HIGH);
+
   pinMode(AIN1, OUTPUT);
   pinMode(AIN2, OUTPUT);
+  pinMode(PWMA, OUTPUT);
   pinMode(BIN1, OUTPUT);
   pinMode(BIN2, OUTPUT);
-  pinMode(PWMA, OUTPUT);
   pinMode(PWMB, OUTPUT);
-  
-  // Inicializa o array de sensores de linha
+
   calibrateLineSensor();
 }
 
 void loop() {
-  // Obtém a posição da linha
-  unsigned int position = qtra.readLine(sensorValues);
+  unsigned int position = qtra.readLine(sensorValues, QTR_EMITTERS_ON, whiteLine);
 
-  // Calcula o erro em relação ao centro da linha
-  int error = GOAL - position;
+  int error = position - GOAL;
 
-  // Calcula o ajuste dos motores com base no erro e no PID
-  int adjustment = KP * error + KD * (error - lastError);
+  integral += error;
+  int derivative = error - lastError;
+  int correction = Kp * error + Ki * integral + Kd * derivative;
 
-  // Armazena o erro para o próximo cálculo
   lastError = error;
 
-  // Calcula as velocidades dos motores
-  int motorASpeed = BASE_SPEED - adjustment;
-  int motorBSpeed = BASE_SPEED + adjustment;
+  int motorEsq = BASE_SPEED + correction;
+  int motorDir = BASE_SPEED - correction;
 
-  // Limita as velocidades dos motores
-  motorASpeed = constrain(motorASpeed, -MAX_SPEED, MAX_SPEED);
-  motorBSpeed = constrain(motorBSpeed, -MAX_SPEED, MAX_SPEED);
+  motorEsq = constrain(motorEsq, MIN_SPEED, MAX_SPEED);
+  motorDir = constrain(motorDir, MIN_SPEED, MAX_SPEED);
 
-  // Ajusta a potência dos motores usando as funções de movimentação
-  runMotor(0, abs(motorASpeed), motorASpeed >= 0 ? 0 : 1);
-  runMotor(1, abs(motorBSpeed), motorBSpeed >= 0 ? 0 : 1);
+  runMotor(0, motorEsq, 0);
+  runMotor(1, motorDir, 0);
+
+  // Mensagens de depuração via Serial (USB)
+  Serial.print("Position: ");
+  Serial.println(position);
+  Serial.print("Error: ");
+  Serial.println(error);
+  Serial.print("Correction: ");
+  Serial.println(correction);
+  Serial.print("Motor Left Speed: ");
+  Serial.println(motorEsq);
+  Serial.print("Motor Right Speed: ");
+  Serial.println(motorDir);
+  Serial.println("-----------------------------");
+
+  // Envia dados via Bluetooth
+  BTSerial.print("Position: ");
+  BTSerial.println(position);
+  BTSerial.print("Error: ");
+  BTSerial.println(error);
+  BTSerial.print("Correction: ");
+  BTSerial.println(correction);
+  BTSerial.print("Motor Left Speed: ");
+  BTSerial.println(motorEsq);
+  BTSerial.print("Motor Right Speed: ");
+  BTSerial.println(motorDir);
+  BTSerial.println("-----------------------------");
+
+  delay(50); // Pequeno atraso para estabilidade
 }
 
-// Função para calibrar os sensores de linha
 void calibrateLineSensor() {
   delay(500);
   pinMode(13, OUTPUT);
-  digitalWrite(13, HIGH);  // Liga o LED do Arduino para indicar que está em modo de calibração
-  for (int i = 0; i < 400; i++) {  // A calibração dura cerca de 10 segundos
-    qtra.calibrate();  // Lê todos os sensores várias vezes para calibrar
+  digitalWrite(13, HIGH);
+  for (int i = 0; i < 400; i++) {
+    qtra.calibrate();
   }
-  digitalWrite(13, LOW);  // Desliga o LED do Arduino para indicar o fim da calibração
+  digitalWrite(13, LOW);
 }
 
 /*
@@ -89,7 +119,7 @@ void calibrateLineSensor() {
  */
 
 void runMotor(int motor, int spd, int dir) {
-  digitalWrite(STBY, HIGH); // Ligar motor
+  digitalWrite(STBY, HIGH);
 
   bool dirPin1 = LOW;
   bool dirPin2 = HIGH;
@@ -99,14 +129,14 @@ void runMotor(int motor, int spd, int dir) {
     dirPin2 = LOW;
   }
 
-  if (motor == 0) { // Motor A
+  if (motor == 0) { // Motor A (esquerdo)
     digitalWrite(AIN1, dirPin1);
     digitalWrite(AIN2, dirPin2);
-    analogWrite(PWMA, spd); // Usar a velocidade diretamente (0-255)
-  } else { // Motor B
+    analogWrite(PWMA, spd);
+  } else { // Motor B (direito)
     digitalWrite(BIN1, dirPin1);
     digitalWrite(BIN2, dirPin2);
-    analogWrite(PWMB, spd); // Usar a velocidade diretamente (0-255)
+    analogWrite(PWMB, spd);
   }
 }
 
