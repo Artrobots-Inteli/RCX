@@ -4508,75 +4508,18 @@
 		(layer "F.Cu")
 		(uuid "c3a966e6-eed5-4148-b2f2-98678f08d88f")
 	)
-	(gr_line
-		(start 130.259283 54.5)
-		(end 111.379 102.955)
+	(gr_poly
+		(pts
+			(xy 211.836 155.067) (xy 211.836 103) (xy 193.197717 54.5) (xy 130.716283 54.5) (xy 111.836 102.955)
+			(xy 111.836 155.067)
+		)
 		(stroke
 			(width 1)
-			(type default)
+			(type solid)
 		)
+		(fill none)
 		(layer "Edge.Cuts")
-		(uuid "06720ef3-821e-42ea-b7c5-097c0e2e6224")
-	)
-	(gr_line
-		(start 211.379 155.067)
-		(end 211.379 103)
-		(stroke
-			(width 1)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "0806a8be-9268-4b2b-b577-4eb9df31d38e")
-	)
-	(gr_line
-		(start 192.740717 54.5)
-		(end 130.259283 54.5)
-		(stroke
-			(width 1)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "0e81edb9-fa4b-4098-9f79-3a9d3da1dfdd")
-	)
-	(gr_line
-		(start 192.740717 54.5)
-		(end 211.379 102.955)
-		(stroke
-			(width 1)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "52d19d6b-c239-4e5a-8907-7798952ffbd5")
-	)
-	(gr_line
-		(start 111.415565 102.963001)
-		(end 111.415565 155.067)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "c4c56432-db47-4760-97a2-f60af8d96a84")
-	)
-	(gr_line
-		(start 111.379 155.067)
-		(end 211.379 155.067)
-		(stroke
-			(width 1)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "cea7eefc-ae1b-427e-a5f8-d481f74a5845")
-	)
-	(gr_line
-		(start 111.379 102.955)
-		(end 111.379 155.067)
-		(stroke
-			(width 1)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "d8fd0534-6f91-47c8-bb54-76d161dd86b7")
+		(uuid "5327bd36-c933-4ef0-8b5b-3111838908d1")
 	)
 	(gr_text "Tem que ter 54"
 		(at 153 142 0)
@@ -4615,17 +4558,6 @@
 				(bold yes)
 			)
 			(justify left bottom)
-		)
-	)
-	(gr_text "${REFERENCE}"
-		(at 100.725 45.69 90)
-		(layer "F.Fab")
-		(uuid "e195fa2a-2424-496b-817d-96e6f2ad9a57")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.15)
-			)
 		)
 	)
 	(dimension
@@ -4759,6 +4691,14 @@
 			(text_position_mode 0)
 			(extension_height 0.58642)
 			(extension_offset 0.5) keep_text_aligned)
+	)
+	(segment
+		(start 211.379 104.318)
+		(end 211.582 104.521)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 0)
+		(uuid "762222a0-693d-44ac-bd92-ae4ed2a98219")
 	)
 	(via
 		(at 206.756 150.368)
@@ -5839,17 +5779,5 @@
 		(layer "F.Cu")
 		(net 40)
 		(uuid "bcbf9001-faea-4ee8-9ed6-21abbf0de388")
-	)
-	(group ""
-		(uuid "15f11d88-903e-4b21-89bc-3e6944a68285")
-		(members "06720ef3-821e-42ea-b7c5-097c0e2e6224")
-	)
-	(group ""
-		(uuid "68bedfbd-9458-4f97-8f6b-61fc927c365a")
-		(members "52d19d6b-c239-4e5a-8907-7798952ffbd5")
-	)
-	(group ""
-		(uuid "d5d6279a-a02f-4460-894d-d878ff9c37ca")
-		(members "0e81edb9-fa4b-4098-9f79-3a9d3da1dfdd")
 	)
 )
