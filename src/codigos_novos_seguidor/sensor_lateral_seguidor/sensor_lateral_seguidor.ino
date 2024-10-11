@@ -9,16 +9,5 @@ void setup() {
 }
 
 void loop() {
-  // Lê o valor do sensor infravermelho (HIGH ou LOW)
-  int leituraSensor = digitalRead(SENSOR_IR);
-
-  // Exibe o valor lido no Serial Monitor
-  if (leituraSensor == HIGH) {
-    Serial.println("0");
-  } else {
-    Serial.println("1");
-  }
-
-  // Pequeno atraso para evitar muitas leituras por segundo
-  delay(20);
+  
 }
