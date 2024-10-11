@@ -32,8 +32,8 @@ int linha = 1;
 long int somaPonderada, soma, posicao, posicaoLida, ultimaPosicao;
 
 // VALORES PID //
-double KP = 1.09;
-double KD = 1.75;
+double KP = 1;
+double KD = 1.6;
 double KI = 0.0;
 int erro, ajuste;
 double ultimoErro = 0;
@@ -44,6 +44,7 @@ unsigned char VELOCIDADE_MAXIMA = 255;
 int contadorLinhasBrancas = 0;
 bool ultimoEstadoSensor = HIGH;  // Começamos assumindo que o sensor está no fundo preto
 unsigned long tempoInicio = 0;  // Variável para armazenar o tempo inicial
+unsigned long tempoDecorrido = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -138,9 +139,11 @@ void loop() {// Verifica se há dados recebidos pelo Bluetooth
     ajuste = KP * erro + KD * (erro - ultimoErro);
     ultimoErro = erro;
 
-    
-    motores(constrain(VELOCIDADE_MAXIMA - ajuste, 0, VELOCIDADE_MAXIMA), constrain(VELOCIDADE_MAXIMA + ajuste, 0, VELOCIDADE_MAXIMA));
-    
+    if (erro == -350) {
+      freios();
+    }else {
+      motores(constrain(VELOCIDADE_MAXIMA - ajuste, 0, VELOCIDADE_MAXIMA), constrain(VELOCIDADE_MAXIMA + ajuste, 0, VELOCIDADE_MAXIMA));
+    }
     // Leitura do sensor infravermelho
     bool estadoSensor = digitalRead(12);
     Serial.println(estadoSensor);
@@ -157,12 +160,15 @@ void loop() {// Verifica se há dados recebidos pelo Bluetooth
     // Atualiza o último estado do sensor
     ultimoEstadoSensor = estadoSensor;
 
-    unsigned long tempoDecorrido = millis() - tempoInicio;
-    if (contadorLinhasBrancas >= 2) {  // 1 segundo = 1000 milissegundos // 6.53s
-      running = false;  // Para a execução                        // Atualizar pelo tempo que leva para o robô completar a pista
-      String timeMessage = "Tempo para concluir a pista em segundos: " + String(tempoDecorrido);
-      bluetoothSerial.println(timeMessage);
-    }
+    tempoDecorrido = millis() - tempoInicio;
+    //if (contadorLinhasBrancas >= 9) {  // 1 segundo = 1000 milissegundos // 6.53s
+     //   running = false;  // Para a execução                        // Atualizar pelo tempo que leva para o robô completar a pista
+      //  String timeMessage = "Tempo para concluir a pista em segundos: " + String(tempoDecorrido);
+       // bluetoothSerial.println(timeMessage);
+     //}
+     if (tempoDecorrido >= 41500) {
+      running = false;
+     }
     
   } else {
     motores(-50, -50);
@@ -319,9 +325,19 @@ void processBluetoothCommand(String command) {
       } else if (command == "stop") {
         Serial.println("Parou o robô");
         running = false;  // Para os motores
+        bluetoothSerial.println(tempoDecorrido);
       } else {
         Serial.println("Comando não reconhecido");
       }
     }
+  }
+}
+
+void freios() {
+  if (erro == -350) {
+      motores(255, -255);
+    }
+  if (erro == 350) {
+    motores(-255, 255);
   }
 }
