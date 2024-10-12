@@ -26,17 +26,8 @@ void setup() {
 }
 
 void loop() {
-  motores(150, 150);
-  delay(1000);
-  motores(255, 255);
-  delay(1000);
-  motores(0, 0);
-  delay(1000);
-  motores(200, 0);
-  delay(1000);
-  motores(0, 200);
-  delay(1000);
-  
+  motores(180, 180);
+  delay(50);
 }
 
 

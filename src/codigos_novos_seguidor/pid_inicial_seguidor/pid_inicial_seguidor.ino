@@ -38,11 +38,11 @@ double KI = 0.0;
 int erro, ajuste;
 double ultimoErro = 0;
 const int objetivo = 350;
-unsigned char VELOCIDADE_MAXIMA = 255;
+unsigned char VELOCIDADE_MAXIMA = 120;
 
-
+int QRE1113_Pin = 12; // Conectado ao pino digital 12
 int contadorLinhasBrancas = 0;
-bool ultimoEstadoSensor = HIGH;  // Começamos assumindo que o sensor está no fundo preto
+bool linhaBrancaAnterior = false;  // Estado inicial, não está sobre uma linha branca
 unsigned long tempoInicio = 0;  // Variável para armazenar o tempo inicial
 unsigned long tempoDecorrido = 0;
 
@@ -135,38 +135,44 @@ void loop() {// Verifica se há dados recebidos pelo Bluetooth
     Serial.println(posicaoLida);
     
     erro = objetivo - posicao;
+
+    if (abs(erro) >= 200) {
+      VELOCIDADE_MAXIMA = 80;
+    } else {
+      VELOCIDADE_MAXIMA = 120;
+    }
     
     ajuste = KP * erro + KD * (erro - ultimoErro);
     ultimoErro = erro;
 
-    if (erro == -350) {
+    if (erro == -350 || erro == 350) {
       freios();
     }else {
       motores(constrain(VELOCIDADE_MAXIMA - ajuste, 0, VELOCIDADE_MAXIMA), constrain(VELOCIDADE_MAXIMA + ajuste, 0, VELOCIDADE_MAXIMA));
     }
     // Leitura do sensor infravermelho
-    bool estadoSensor = digitalRead(12);
-    Serial.println(estadoSensor);
+    //int QRE_Value = readQD();
+    //Serial.println(QRE_Value);
 
-    // Verifica se houve transição de HIGH (preto) para LOW (branco)
-    if (ultimoEstadoSensor == HIGH && estadoSensor == LOW) {
-      contadorLinhasBrancas++;  // Incrementa o contador de linhas brancas
-      
-      String mensagem = "Linhas brancas detectadas: " + String(contadorLinhasBrancas);
-      bluetoothSerial.println(mensagem);  // Envia a contagem via Bluetooth
-      Serial.println(mensagem);  // Também envia para o monitor serial
-    }
-
-    // Atualiza o último estado do sensor
-    ultimoEstadoSensor = estadoSensor;
+    //if (QRE_Value < 100) {  // Linha branca detectada (valor baixo)
+     // if (!linhaBrancaAnterior) {
+        // Se o sensor estava fora da linha e agora detecta uma linha branca, contar uma linha
+       // contadorLinhasBrancas++;
+        //Serial.print("Contador de Linhas Brancas: ");
+        //Serial.println(contadorLinhasBrancas);
+        //bluetoothSerial.println(contadorLinhasBrancas);
+      //}
+      //linhaBrancaAnterior = true;  // Atualizar o estado
+    //} else {
+     // linhaBrancaAnterior = false;  // Não está detectando linha branca
+   // }
 
     tempoDecorrido = millis() - tempoInicio;
-    //if (contadorLinhasBrancas >= 9) {  // 1 segundo = 1000 milissegundos // 6.53s
-     //   running = false;  // Para a execução                        // Atualizar pelo tempo que leva para o robô completar a pista
-      //  String timeMessage = "Tempo para concluir a pista em segundos: " + String(tempoDecorrido);
-       // bluetoothSerial.println(timeMessage);
+   // if (contadorLinhasBrancas >= 8 && tempoDecorrido >= 39000) {  // 1 segundo = 1000 milissegundos // 6.53s
+    //    contadorLinhasBrancas = 0;
      //}
-     if (tempoDecorrido >= 41500) {
+
+     if (tempoDecorrido >= 42500) {
       running = false;
      }
     
@@ -283,7 +289,7 @@ void processBluetoothCommand(String command) {
   char constantType = command.charAt(0);  // O primeiro caractere é o tipo de constante (P, I, D)
   
   if (command.length() > 1) {
-    if (constantType == 'P' || constantType == 'I' || constantType == 'D') {
+    if (constantType == 'P' || constantType == 'I' || constantType == 'D' || constantType == 'V') {
       String valueString = command.substring(1);  // O restante da string é o valor
       String message = "KP = " + String(KP) + ", KD = " + String(KD) + ", KI = " + String(KI);
       float value = valueString.toFloat();
@@ -312,6 +318,9 @@ void processBluetoothCommand(String command) {
           Serial.println(KD);
           
           break;
+
+        case 'V':
+          VELOCIDADE_MAXIMA = value;
         default:
           Serial.println("");
           break;
@@ -335,9 +344,27 @@ void processBluetoothCommand(String command) {
 
 void freios() {
   if (erro == -350) {
-      motores(255, -255);
+      motores(250, -250);
     }
   if (erro == 350) {
-    motores(-255, 255);
+    motores(-250, 250);
   }
+}
+
+int readQD(){
+  // Retorna o valor do QRE1113 
+  // Números menores significam mais reflexividade
+  // Mais de 3000 significa que nada foi refletido.
+  pinMode(QRE1113_Pin, OUTPUT);
+  digitalWrite(QRE1113_Pin, HIGH);  
+  delayMicroseconds(10);
+  pinMode(QRE1113_Pin, INPUT);
+
+  long time = micros();
+
+  // Cronometra quanto tempo o pino fica em HIGH, mas sai após 3ms se nada acontecer
+  while (digitalRead(QRE1113_Pin) == HIGH && micros() - time < 3000); 
+  int diff = micros() - time;
+
+  return diff;
 }
