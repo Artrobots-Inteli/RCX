@@ -32,13 +32,16 @@ int linha = 1;
 long int somaPonderada, soma, posicao, posicaoLida, ultimaPosicao;
 
 // VALORES PID //
-double KP = 1;
-double KD = 1.6;
+double KP = 0.5;
+double KD = 5;
 double KI = 0.0;
 int erro, ajuste;
 double ultimoErro = 0;
 const int objetivo = 350;
-unsigned char VELOCIDADE_MAXIMA = 120;
+unsigned char VELOCIDADE = 120;
+unsigned char VELOCIDADE_MAXIMA = 150;
+
+long int tempo = 37350;
 
 int QRE1113_Pin = 12; // Conectado ao pino digital 12
 int contadorLinhasBrancas = 0;
@@ -136,11 +139,6 @@ void loop() {// Verifica se há dados recebidos pelo Bluetooth
     
     erro = objetivo - posicao;
 
-    if (abs(erro) >= 200) {
-      VELOCIDADE_MAXIMA = 80;
-    } else {
-      VELOCIDADE_MAXIMA = 120;
-    }
     
     ajuste = KP * erro + KD * (erro - ultimoErro);
     ultimoErro = erro;
@@ -148,7 +146,7 @@ void loop() {// Verifica se há dados recebidos pelo Bluetooth
     if (erro == -350 || erro == 350) {
       freios();
     }else {
-      motores(constrain(VELOCIDADE_MAXIMA - ajuste, 0, VELOCIDADE_MAXIMA), constrain(VELOCIDADE_MAXIMA + ajuste, 0, VELOCIDADE_MAXIMA));
+      motores(constrain(VELOCIDADE - ajuste, 0, VELOCIDADE), constrain(VELOCIDADE + ajuste, 0, VELOCIDADE));
     }
     // Leitura do sensor infravermelho
     //int QRE_Value = readQD();
@@ -172,7 +170,7 @@ void loop() {// Verifica se há dados recebidos pelo Bluetooth
     //    contadorLinhasBrancas = 0;
      //}
 
-     if (tempoDecorrido >= 42500) {
+     if (tempoDecorrido >= tempo) {
       running = false;
      }
     
@@ -289,10 +287,12 @@ void processBluetoothCommand(String command) {
   char constantType = command.charAt(0);  // O primeiro caractere é o tipo de constante (P, I, D)
   
   if (command.length() > 1) {
-    if (constantType == 'P' || constantType == 'I' || constantType == 'D' || constantType == 'V') {
+    if (constantType == 'P' || constantType == 'I' || constantType == 'D' || constantType == 'V' || constantType == 'T') {
       String valueString = command.substring(1);  // O restante da string é o valor
       String message = "KP = " + String(KP) + ", KD = " + String(KD) + ", KI = " + String(KI);
       float value = valueString.toFloat();
+      int intvalue = valueString.toInt();
+      long int valuetempo = valueString.toInt();
       switch (constantType) {
         case 'P':
           KP = value;
@@ -320,7 +320,17 @@ void processBluetoothCommand(String command) {
           break;
 
         case 'V':
-          VELOCIDADE_MAXIMA = value;
+          message = "VELOCIDADE = " + String(value);
+          VELOCIDADE_MAXIMA = intvalue;
+          bluetoothSerial.println(message);
+          break;
+
+        case 'T':
+        message = "Tempo= " + String(valuetempo);
+        tempo = valuetempo;
+        bluetoothSerial.println(message);
+        break;
+          
         default:
           Serial.println("");
           break;
@@ -344,10 +354,10 @@ void processBluetoothCommand(String command) {
 
 void freios() {
   if (erro == -350) {
-      motores(250, -250);
+      motores(VELOCIDADE_MAXIMA, (VELOCIDADE_MAXIMA) * (-1));
     }
   if (erro == 350) {
-    motores(-250, 250);
+    motores((VELOCIDADE_MAXIMA) * (-1), VELOCIDADE_MAXIMA);
   }
 }
 
